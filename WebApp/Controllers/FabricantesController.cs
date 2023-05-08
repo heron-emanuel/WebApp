@@ -100,6 +100,7 @@ namespace WebApp.Controllers
             Fabricante fabricante = context.Fabricantes.Find(id);
             context.Fabricantes.Remove(fabricante);
             context.SaveChanges();
+            TempData["message"] = $"Fabricante {fabricante.Nome} foi removido com sucesso";
             return RedirectToAction("Index");
         }
     }
