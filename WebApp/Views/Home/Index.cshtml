@@ -13,6 +13,12 @@
         <div class="row">
             <div class="col-md-6 border">
                 <h2 class="bg-primary" style="padding: 0.5em;">Fabricantes</h2>
+
+                @if (Model.Fabricantes.Count() == 0)
+                {
+                    <p>Não há fabricantes</p>
+                }
+
                 <ul class="list-group">
                     @foreach (var fabricante in Model.Fabricantes)
                     {
@@ -21,10 +27,18 @@
                         </li>
                     }
                 </ul>
+
+                @Html.ActionLink("Criar", "Create", "Fabricantes", null, new { @class = "btn btn-primary" })
             </div>
 
             <div class="col-md-6 border">
                 <h2 class="bg-primary" style="padding: 0.5em;">Categorias</h2>
+
+                @if (Model.Categorias.Count() == 0)
+                {
+                    <p>Não há categorias</p>
+                }
+
                 <ul class="list-group">
                     @foreach (var categoria in Model.Categorias)
                     {
@@ -33,6 +47,8 @@
                         </li>
                     }
                 </ul>
+
+                @Html.ActionLink("Criar", "Create", "Categorias", null, new { @class = "btn btn-primary" })
             </div>
         </div>
     </div>
