@@ -87,5 +87,53 @@ namespace WebApp.Controllers
                 return View(produto);
             }
         }
+
+        // GET: Produtos/Details/5
+        public ActionResult Details(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produto produto = context.Produtos.Where(p => p.ProdutoId == id).
+            Include(c => c.Categoria).Include(f => f.Fabricante).First();
+            if (produto == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produto);
+        }
+
+        public ActionResult Delete(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produto produto = context.Produtos.Where(p => p.ProdutoId == id).
+            Include(c => c.Categoria).Include(f => f.Fabricante).First();
+            if (produto == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produto);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                Produto produto = context.Produtos.Find(id);
+                context.Produtos.Remove(produto);
+                context.SaveChanges();
+                TempData["Message"] = "Produto " + produto.Nome.ToUpper() + " foi removido";
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }
