@@ -74,7 +74,8 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Categoria c = context.Categorias.Find(id);
+            Categoria c = context.Categorias.Where(ca => ca.CategoriaId == id)
+                            .Include("Produtos.Categoria").First();
             if (c == null)
             {
                 return HttpNotFound();

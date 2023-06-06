@@ -27,3 +27,5 @@
         new { @class = "btn btn-info" })
     </div>
 </div>
+
+@Html.Partial("~/Views/Produtos/_PorModelo.cshtml", Model.Produtos.ToList(), new ViewDataDictionary { { "title", "Relação de PRODUTOS registrados para a categoria" }, { "categoria", true } })
