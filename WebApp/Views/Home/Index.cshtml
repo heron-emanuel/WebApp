@@ -1,59 +1,56 @@
 ﻿@model WebApp.Models.Home
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Home";
+}
 
-<!DOCTYPE html>
+<div class="container col-sm-8">
+    <div class="border">
+        <h2 class="bg-primary" style="padding: 0.5em;">Fabricantes</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link href="@Url.Content("~/content/bootstrap.css")" rel="stylesheet" />
-    <title>Home</title>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 border">
-                <h2 class="bg-primary" style="padding: 0.5em;">Fabricantes</h2>
+        @if (Model.Fabricantes.Count() == 0)
+        {
+            <p>Não há fabricantes</p>
+        }
 
-                @if (Model.Fabricantes.Count() == 0)
-                {
-                    <p>Não há fabricantes</p>
-                }
+        <ul class="list-group">
+            @foreach (var fabricante in Model.Fabricantes)
+            {
+                <li class="list-group-item">
+                    @Html.ActionLink(fabricante.Nome, "Details", "Fabricantes", new { id = fabricante.FabricanteId }, null)
+                </li>
+            }
+        </ul>
 
-                <ul class="list-group">
-                    @foreach (var fabricante in Model.Fabricantes)
-                    {
-                        <li class="list-group-item">
-                            @Html.ActionLink(fabricante.Nome, "Details", "Fabricantes", new { id = fabricante.FabricanteId }, null)
-                        </li>
-                    }
-                </ul>
-
-                @Html.ActionLink("Criar", "Create", "Fabricantes", null, new { @class = "btn btn-primary" })
-            </div>
-
-            <div class="col-md-6 border">
-                <h2 class="bg-primary" style="padding: 0.5em;">Categorias</h2>
-
-                @if (Model.Categorias.Count() == 0)
-                {
-                    <p>Não há categorias</p>
-                }
-
-                <ul class="list-group">
-                    @foreach (var categoria in Model.Categorias)
-                    {
-                        <li class="list-group-item">
-                            @Html.ActionLink(categoria.Nome, "Details", "Categorias", new { id = categoria.CategoriaId }, null)
-                        </li>
-                    }
-                </ul>
-
-                @Html.ActionLink("Criar", "Create", "Categorias", null, new { @class = "btn btn-primary" })
-            </div>
-        </div>
+        @Html.ActionLink("Criar", "Create", "Fabricantes", null, new { @class = "btn btn-primary" })
     </div>
 
-    <script src="@Url.Content("~/scripts/jquery-2.2.4.js")"></script>
-    <script src="@Url.Content("~/scripts/bootstrap.js")"></script>
-</body>
-</html>
+    <div class="border">
+        <h2 class="bg-primary" style="padding: 0.5em;">Categorias</h2>
+
+        @if (Model.Categorias.Count() == 0)
+        {
+            <p>Não há categorias</p>
+        }
+
+        <ul class="list-group">
+            @foreach (var categoria in Model.Categorias)
+            {
+                <li class="list-group-item">
+                    @Html.ActionLink(categoria.Nome, "Details", "Categorias", new { id = categoria.CategoriaId }, null)
+                </li>
+            }
+        </ul>
+
+        @Html.ActionLink("Criar", "Create", "Categorias", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+@section ScriptPage {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').removeClass("active");
+            $('#home-li').addClass("active");
+        });
+    </script>
+}
