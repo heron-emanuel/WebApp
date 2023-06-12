@@ -17,7 +17,7 @@
             @foreach (var fabricante in Model.Fabricantes)
             {
                 <li class="list-group-item">
-                    @Html.ActionLink(fabricante.Nome, "Details", "Fabricantes", new { id = fabricante.FabricanteId }, null)
+                    @Html.ActionLink(fabricante.Nome, "Fabricante", "Home", new { id = fabricante.FabricanteId }, null)
                 </li>
             }
         </ul>
@@ -37,12 +37,26 @@
             @foreach (var categoria in Model.Categorias)
             {
                 <li class="list-group-item">
-                    @Html.ActionLink(categoria.Nome, "Details", "Categorias", new { id = categoria.CategoriaId }, null)
+                    @Html.ActionLink(categoria.Nome, "Categoria", "Home", new { id = categoria.CategoriaId }, null)
                 </li>
             }
         </ul>
 
         @Html.ActionLink("Criar", "Create", "Categorias", null, new { @class = "btn btn-primary" })
+    </div>
+
+    <div style="margin-top: 2em">
+        @if (ViewData.ContainsKey("categoria"))
+        {
+            if (ViewData["categoria"].Equals(true))
+            {
+                @Html.Partial("~/Views/Produtos/_PorModelo.cshtml", ViewData["item"], new ViewDataDictionary { { "title", "Relação de PRODUTOS registrados para a categoria" }, { "categoria", true } })
+            }
+            else
+            {
+                @Html.Partial("~/Views/Produtos/_PorModelo.cshtml", ViewData["item"], new ViewDataDictionary { { "title", "Relação de PRODUTOS registrados para o fabricante" }, { "categoria", false } })
+            }
+        }
     </div>
 </div>
 
