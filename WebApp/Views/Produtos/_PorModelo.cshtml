@@ -13,7 +13,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Nome)
                     </th>
-                    <th>@(ViewData["categoria"])</th>
+                    <th>@(ViewData["categoria"].Equals(true) ? "Categoria" : "Fabricante")</th>
                 </tr>
             </thead>
             <tbody>
