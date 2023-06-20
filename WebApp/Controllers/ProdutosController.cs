@@ -70,12 +70,25 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Produto produto)
+        public ActionResult Edit(Produto produto, HttpPostedFileBase logotipo = null, string chkRemoverImagem = null)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (chkRemoverImagem != null)
+                    {
+                        produto = null;
+                    }
+
+                    if (logotipo != null)
+                    {
+                        var buffer = new byte[logotipo.ContentLength];
+                        logotipo.InputStream.Read(buffer, 0, logotipo.ContentLength);
+                        produto.Logotipo = buffer;
+                        produto.LogotipoMimeType = logotipo.ContentType;
+                    }
+
                     context.Entry(produto).State = EntityState.Modified;
                     context.SaveChanges();
                     return RedirectToAction("Index");
@@ -86,6 +99,15 @@ namespace WebApp.Controllers
             {
                 return View(produto);
             }
+        }
+        public FileContentResult GetLogotipo(long id)
+        {
+            Produto produto = context.Produtos.Find(id);
+            if (produto != null)
+            {
+                return File(produto.Logotipo, produto.LogotipoMimeType);
+            }
+            return null;
         }
 
         // GET: Produtos/Details/5

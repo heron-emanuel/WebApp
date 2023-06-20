@@ -13,5 +13,8 @@ namespace WebApp.Models
         public long? FabricanteId { get; set; }
         public Categoria Categoria { get; set; }
         public Fabricante Fabricante { get; set; }
+
+        public string LogotipoMimeType { get; set; }
+        public byte[] Logotipo { get; set; }
     }
 }
