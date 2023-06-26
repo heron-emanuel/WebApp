@@ -85,6 +85,9 @@ new { enctype = "multipart/form-data" }))
 
                                 </label>
                             </div>
+
+                            @Html.ActionLink("Baixar o arquivo : " + Model.NomeArquivo, "DownloadArquivo",
+"Produtos", new { id = Model.ProdutoId }, null)
                         </div>
                         }
                     </div>
