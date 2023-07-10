@@ -4,19 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Net;
 using System.Web.Mvc;
-using WebApp.Models;
-using WebApp.Context;
+using Modelo.Tabelas;
 using System.Data.Entity;
+using Servico.Tabelas;
 
 namespace WebApp.Controllers
 {
     public class CategoriasController : Controller
     {
-        private readonly EFContext context = new EFContext();
+        private readonly CategoriaServico categoriaServico = new CategoriaServico();
+
         // GET: Categorias
         public ActionResult Index()
         {
-            return View(context.Categorias.OrderBy(c => c.Nome));
+            return View(categoriaServico.ObterCategoriasClassificadasPorNome());
         }
         
         public ActionResult Create()
@@ -33,8 +34,7 @@ namespace WebApp.Controllers
                 return View();
             }
 
-            context.Categorias.Add(categoria);
-            context.SaveChanges();
+            categoriaServico.GravarCategoria(categoria);
             return RedirectToAction("Index");
         }
 
@@ -45,7 +45,7 @@ namespace WebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Categoria c = context.Categorias.Find(id);
+            Categoria c = categoriaServico.ObterCategoriaPorId(id.Value);
             if (c == null)
             {
                 return HttpNotFound();
@@ -63,8 +63,7 @@ namespace WebApp.Controllers
                 return View(categoria);
             }
 
-            context.Entry(categoria).State = EntityState.Modified;
-            context.SaveChanges();
+            categoriaServico.GravarCategoria(categoria);
             return RedirectToAction("Index");
         }
 
