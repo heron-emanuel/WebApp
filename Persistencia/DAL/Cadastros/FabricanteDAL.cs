@@ -17,6 +17,11 @@ namespace Persistencia.DAL.Cadastros
             return context.Fabricantes.OrderBy(b => b.Nome);
         }
 
+        public IQueryable<Fabricante> ObterFabricantesComProdutos()
+        {
+            return context.Fabricantes.Include("Produtos.Fabricante");
+        }
+
         public Fabricante ObterFabricantePorId(long id)
         {
             return context.Fabricantes.Where(f => f.FabricanteId == id).First();

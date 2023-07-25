@@ -16,6 +16,11 @@ namespace Servico.Cadastros
             return fabricanteDAL.ObterFabricantesClassificadosPorNome();
         }
 
+        public IQueryable<Fabricante> ObterFabricantesComProdutos()
+        {
+            return fabricanteDAL.ObterFabricantesComProdutos();
+        }
+
         public Fabricante ObterFabricantePorId(long id)
         {
             return fabricanteDAL.ObterFabricantePorId(id);

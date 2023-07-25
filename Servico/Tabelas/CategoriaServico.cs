@@ -16,6 +16,11 @@ namespace Servico.Tabelas
             return categoriaDAL.ObterCategoriasClassificadasPorNome();
         }
 
+        public IQueryable<Categoria> ObterCategoriasComProdutos()
+        {
+            return categoriaDAL.ObterCategoriaComProdutos();
+        }
+
         public Categoria ObterCategoriaPorId(long id)
         {
             return categoriaDAL.ObterCategoriaPorId(id);

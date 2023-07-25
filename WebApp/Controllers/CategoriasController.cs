@@ -13,6 +13,37 @@ namespace WebApp.Controllers
     public class CategoriasController : Controller
     {
         private readonly CategoriaServico categoriaServico = new CategoriaServico();
+        private ActionResult ObterVisaoCategoriaPorId(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(
+                HttpStatusCode.BadRequest);
+            }
+            Categoria categoria = categoriaServico.ObterCategoriaPorId((long)id);
+            if (categoria == null)
+            {
+                return HttpNotFound();
+            }
+            return View(categoria);
+        }
+
+        private ActionResult GravarCategoria(Categoria categoria)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    categoriaServico.GravarCategoria(categoria);
+                    return RedirectToAction("Index");
+                }
+                return View(categoria);
+            }
+            catch
+            {
+                return View(categoria);
+            }
+        }
 
         // GET: Categorias
         public ActionResult Index()
@@ -29,82 +60,45 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Categoria categoria)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            categoriaServico.GravarCategoria(categoria);
-            return RedirectToAction("Index");
+            return GravarCategoria(categoria);
         }
 
         public ActionResult Edit(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Categoria c = categoriaServico.ObterCategoriaPorId(id.Value);
-            if (c == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(c);
+            return ObterVisaoCategoriaPorId(id);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Categoria categoria)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(categoria);
-            }
-
-            categoriaServico.GravarCategoria(categoria);
-            return RedirectToAction("Index");
+            return GravarCategoria(categoria);
         }
 
         public ActionResult Details(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Categoria c = context.Categorias.Where(ca => ca.CategoriaId == id)
-                            .Include("Produtos.Categoria").First();
-            if (c == null)
-            {
-                return HttpNotFound();
-            }
-            return View(c);
+            return ObterVisaoCategoriaPorId(id);
         }
 
         public ActionResult Delete(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Categoria c = context.Categorias.Find(id);
-            if (c == null)
-            {
-                return HttpNotFound();
-            }
-            return View(c);
+            return ObterVisaoCategoriaPorId(id);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(long id)
         {
-            Categoria c= context.Categorias.Find(id);
-            context.Categorias.Remove(c);
-            context.SaveChanges();
-            TempData["message"] = $"Categoria {c.Nome} foi removida com sucesso";
-            return RedirectToAction("Index");
+            try
+            {
+                Categoria categoria = categoriaServico.EliminarCategoriaPorId(id);
+                TempData["Message"] = "Categoria " + categoria.Nome.ToUpper() + " foi removida";
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
